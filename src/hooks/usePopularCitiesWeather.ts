@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
+  API_KEY_SETUP_MESSAGE,
   getCurrentWeatherByCity,
   isApiKeyConfigured,
   WeatherApiError,
@@ -172,7 +173,7 @@ export function usePopularCitiesWeather(unit: TemperatureUnit): PopularCitiesWea
   const [state, setState] = useState<PopularCitiesWeatherState>({
     cities: getFallbackCities(activeCitySeeds, unit),
     loading: isApiKeyConfigured(),
-    error: isApiKeyConfigured() ? null : 'Add your OpenWeatherMap API key to refresh live global city weather.',
+    error: isApiKeyConfigured() ? null : API_KEY_SETUP_MESSAGE,
     rotationIndex,
   });
 
@@ -196,7 +197,7 @@ export function usePopularCitiesWeather(unit: TemperatureUnit): PopularCitiesWea
       setState({
         cities: fallbackCities,
         loading: false,
-        error: 'Add your OpenWeatherMap API key to refresh live global city weather.',
+        error: API_KEY_SETUP_MESSAGE,
         rotationIndex,
       });
       return;

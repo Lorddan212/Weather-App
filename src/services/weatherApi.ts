@@ -24,6 +24,9 @@ const API_KEY = (import.meta.env.VITE_OPENWEATHER_API_KEY || '')
   .trim()
   .replace(/^['"]|['"]$/g, '');
 
+export const API_KEY_SETUP_MESSAGE =
+  'Add VITE_OPENWEATHER_API_KEY in Vercel Environment Variables, then redeploy.';
+
 /**
  * Custom error class for weather API errors
  */
@@ -128,7 +131,10 @@ export const getCurrentWeatherByCity = async (
   unit: TemperatureUnit = 'celsius'
 ): Promise<CurrentWeatherResponse> => {
   if (!API_KEY) {
-    throw new WeatherApiError('API key is not configured', 'MISSING_API_KEY');
+    throw new WeatherApiError(
+      `OpenWeatherMap API key is not configured. ${API_KEY_SETUP_MESSAGE}`,
+      'MISSING_API_KEY'
+    );
   }
 
   if (!city.trim()) {
@@ -158,7 +164,10 @@ export const getCurrentWeatherByCoords = async (
   unit: TemperatureUnit = 'celsius'
 ): Promise<CurrentWeatherResponse> => {
   if (!API_KEY) {
-    throw new WeatherApiError('API key is not configured', 'MISSING_API_KEY');
+    throw new WeatherApiError(
+      `OpenWeatherMap API key is not configured. ${API_KEY_SETUP_MESSAGE}`,
+      'MISSING_API_KEY'
+    );
   }
 
   const response = await apiClient.get<CurrentWeatherResponse>('/weather', {
@@ -185,7 +194,10 @@ export const getForecastByCity = async (
   unit: TemperatureUnit = 'celsius'
 ): Promise<ForecastResponse> => {
   if (!API_KEY) {
-    throw new WeatherApiError('API key is not configured', 'MISSING_API_KEY');
+    throw new WeatherApiError(
+      `OpenWeatherMap API key is not configured. ${API_KEY_SETUP_MESSAGE}`,
+      'MISSING_API_KEY'
+    );
   }
 
   if (!city.trim()) {
@@ -215,7 +227,10 @@ export const getForecastByCoords = async (
   unit: TemperatureUnit = 'celsius'
 ): Promise<ForecastResponse> => {
   if (!API_KEY) {
-    throw new WeatherApiError('API key is not configured', 'MISSING_API_KEY');
+    throw new WeatherApiError(
+      `OpenWeatherMap API key is not configured. ${API_KEY_SETUP_MESSAGE}`,
+      'MISSING_API_KEY'
+    );
   }
 
   const response = await apiClient.get<ForecastResponse>('/forecast', {
@@ -278,7 +293,10 @@ export const reverseGeocode = async (
   coordinates: Coordinates
 ): Promise<{ name: string; country: string }> => {
   if (!API_KEY) {
-    throw new WeatherApiError('API key is not configured', 'MISSING_API_KEY');
+    throw new WeatherApiError(
+      `OpenWeatherMap API key is not configured. ${API_KEY_SETUP_MESSAGE}`,
+      'MISSING_API_KEY'
+    );
   }
 
   try {

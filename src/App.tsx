@@ -13,12 +13,18 @@ import { useGeolocation } from '@/hooks/useGeolocation';
 import { useTheme } from '@/hooks/useTheme';
 import { useSearchHistory, useLastSearchedCity } from '@/hooks/useLocalStorage';
 import type { TemperatureUnit, WeatherConditionType } from '@/types/weather';
-import { isApiKeyConfigured } from '@/services/weatherApi';
+import { API_KEY_SETUP_MESSAGE, isApiKeyConfigured } from '@/services/weatherApi';
 import { formatDate } from '@/utils/weatherUtils';
+
+const isConfigurationError = (message: string | null | undefined): boolean => {
+  const lowerMessage = message?.toLowerCase() || '';
+  return lowerMessage.includes('api key') || lowerMessage.includes('configuration');
+};
 
 function App() {
   // Theme management
   const { theme, toggleTheme, isLoaded: themeLoaded } = useTheme();
+  const hasApiKey = isApiKeyConfigured();
   
   // Temperature unit
   const [unit, setUnit] = useState<TemperatureUnit>('celsius');
@@ -62,15 +68,19 @@ function App() {
   // Track if initial load is complete
   const [initialLoadComplete, setInitialLoadComplete] = useState(false);
 
+  const showApiKeyToast = useCallback(() => {
+    toast.error('API key not configured', {
+      description: API_KEY_SETUP_MESSAGE,
+      duration: 10000,
+    });
+  }, []);
+
   // Check API key configuration
   useEffect(() => {
-    if (!isApiKeyConfigured()) {
-      toast.error('API key not configured', {
-        description: 'Please add your OpenWeatherMap API key to the .env file',
-        duration: 10000,
-      });
+    if (!hasApiKey) {
+      showApiKeyToast();
     }
-  }, []);
+  }, [hasApiKey, showApiKeyToast]);
 
   // Handle successful weather fetch
   useEffect(() => {
@@ -105,6 +115,10 @@ function App() {
     if (!initialLoadComplete && lastCityLoaded && historyLoaded) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setInitialLoadComplete(true);
+
+      if (!hasApiKey) {
+        return;
+      }
       
       if (lastCity) {
         fetchByCity(lastCity);
@@ -112,16 +126,26 @@ function App() {
         fetchByCity('London');
       }
     }
-  }, [initialLoadComplete, lastCityLoaded, historyLoaded, lastCity, fetchByCity]);
+  }, [initialLoadComplete, lastCityLoaded, historyLoaded, lastCity, fetchByCity, hasApiKey]);
 
   // Handlers
   const handleSearch = useCallback((city: string) => {
+    if (!hasApiKey) {
+      showApiKeyToast();
+      return;
+    }
+
     clearWeatherError();
     clearGeoError();
     fetchByCity(city);
-  }, [fetchByCity, clearWeatherError, clearGeoError]);
+  }, [fetchByCity, clearWeatherError, clearGeoError, hasApiKey, showApiKeyToast]);
 
   const handleLocationClick = useCallback(() => {
+    if (!hasApiKey) {
+      showApiKeyToast();
+      return;
+    }
+
     if (!geoSupported) {
       toast.error('Geolocation is not supported by your browser');
       return;
@@ -129,19 +153,29 @@ function App() {
     clearWeatherError();
     clearGeoError();
     getPosition();
-  }, [geoSupported, getPosition, clearWeatherError, clearGeoError]);
+  }, [geoSupported, getPosition, clearWeatherError, clearGeoError, hasApiKey, showApiKeyToast]);
 
   const handleHistoryItemClick = useCallback((city: string) => {
+    if (!hasApiKey) {
+      showApiKeyToast();
+      return;
+    }
+
     clearWeatherError();
     clearGeoError();
     fetchByCity(city);
-  }, [fetchByCity, clearWeatherError, clearGeoError]);
+  }, [fetchByCity, clearWeatherError, clearGeoError, hasApiKey, showApiKeyToast]);
 
   const handleRefresh = useCallback(() => {
+    if (!hasApiKey) {
+      showApiKeyToast();
+      return;
+    }
+
     clearWeatherError();
     clearGeoError();
     refetch();
-  }, [refetch, clearWeatherError, clearGeoError]);
+  }, [refetch, clearWeatherError, clearGeoError, hasApiKey, showApiKeyToast]);
 
   const handleUnitChange = useCallback((newUnit: TemperatureUnit) => {
     setUnit(newUnit);
@@ -154,6 +188,12 @@ function App() {
     new Date().getTime() >= weatherData.current.sunrise.getTime() && 
     new Date().getTime() < weatherData.current.sunset.getTime() 
     : true;
+  const activeError = weatherError || geoError;
+  const errorRetryHandler = activeError && !isConfigurationError(activeError)
+    ? weatherError
+      ? () => fetchByCity(lastCity || 'London')
+      : handleLocationClick
+    : undefined;
 
   // Show loading state while theme is loading
   if (!themeLoaded) {
@@ -204,11 +244,11 @@ function App() {
         </section>
 
         {/* Error Display */}
-        {(weatherError || geoError) && (
+        {activeError && (
           <section className="mb-6">
             <ErrorDisplay 
-              message={weatherError || geoError || ''} 
-              onRetry={weatherError ? () => fetchByCity(lastCity || 'London') : handleLocationClick}
+              message={activeError} 
+              onRetry={errorRetryHandler}
             />
           </section>
         )}

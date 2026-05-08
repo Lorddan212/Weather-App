@@ -2,6 +2,7 @@ import { MapPin, RefreshCw } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { WeatherConditionIcon } from '@/components/WeatherConditionIcon';
 import { CITY_CARD_PLACEHOLDERS, usePopularCitiesWeather } from '@/hooks/usePopularCitiesWeather';
+import { isApiKeyConfigured } from '@/services/weatherApi';
 import type { TemperatureUnit } from '@/types/weather';
 import { formatTemperature, formatWindSpeed } from '@/utils/weatherUtils';
 
@@ -12,6 +13,7 @@ interface PopularCitiesWeatherProps {
 
 export function PopularCitiesWeather({ unit, onCitySelect }: PopularCitiesWeatherProps) {
   const { cities, loading, error } = usePopularCitiesWeather(unit);
+  const liveDetailsEnabled = isApiKeyConfigured();
 
   return (
     <section className="space-y-4 text-foreground dark:text-primary-foreground">
@@ -55,7 +57,8 @@ export function PopularCitiesWeather({ unit, onCitySelect }: PopularCitiesWeathe
                     key={`${city.city}-${city.country}`}
                     type="button"
                     onClick={() => onCitySelect(city.city)}
-                    className="group min-h-[176px] rounded-2xl bg-background/95 p-4 text-left text-foreground shadow-xs ring-1 ring-border/10 transition-all duration-300 hover:-translate-y-1 hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:bg-primary/25 dark:text-primary-foreground dark:ring-primary-foreground/10 dark:hover:bg-primary/35"
+                    disabled={!liveDetailsEnabled}
+                    className="group min-h-[176px] rounded-2xl bg-background/95 p-4 text-left text-foreground shadow-xs ring-1 ring-border/10 transition-all duration-300 hover:-translate-y-1 hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-default disabled:hover:translate-y-0 dark:bg-primary/25 dark:text-primary-foreground dark:ring-primary-foreground/10 dark:hover:bg-primary/35"
                     aria-label={`Show full weather for ${city.city}`}
                   >
                     <div className="mb-4 flex items-start justify-between gap-3">
@@ -96,7 +99,7 @@ export function PopularCitiesWeather({ unit, onCitySelect }: PopularCitiesWeathe
 
         {error && cities.length > 0 && (
           <p className="mt-3 text-sm font-medium text-muted-foreground dark:text-primary-foreground/75">
-            Live refresh paused. Restart the dev server after changing `.env`, then refresh the browser.
+            {error}
           </p>
         )}
       </div>

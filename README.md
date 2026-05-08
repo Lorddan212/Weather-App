@@ -2,8 +2,6 @@
 
 A modern, production-ready weather application built with React, TypeScript, and Tailwind CSS. Features real-time weather data, 5-day forecasts, geolocation support, and a beautiful responsive UI with dynamic backgrounds.
 
-![WeatherApp Screenshot](https://via.placeholder.com/800x400?text=WeatherApp+Screenshot)
-
 ## Features
 
 ### Core Features
@@ -118,6 +116,16 @@ npm run build
 
 The built files will be in the `dist/` directory.
 
+### Deploying to Vercel
+
+Add this environment variable in your Vercel project settings before deploying:
+
+```bash
+VITE_OPENWEATHER_API_KEY=your_api_key_here
+```
+
+Select the `Production` and `Preview` environments, save it, then redeploy the project. Your local `.env` file is ignored by git and is not sent to Vercel.
+
 ### Preview Production Build
 
 ```bash
@@ -222,4 +230,5 @@ MIT License - see LICENSE file for details
 ## Support
 
 For issues and feature requests, please use the GitHub issue tracker.
-# Weather-App
+
+## Weather-App
