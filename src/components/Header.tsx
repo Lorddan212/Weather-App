@@ -23,24 +23,24 @@ export const Header: React.FC<HeaderProps> = ({
   onUnitChange,
 }) => {
   return (
-    <header className="sticky top-0 z-40 w-full bg-background/70 shadow-xs backdrop-blur-xl">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+    <header className="sticky inset-x-0 top-0 z-40 m-0 w-full bg-background/80 p-0 shadow-xs backdrop-blur-xl dark:bg-primary/25">
+      <div className="flex h-16 w-full max-w-none items-center justify-between px-3 sm:container sm:mx-auto sm:px-4">
         {/* Logo */}
         <div className="flex items-center gap-2">
           <div className="relative">
-            <Cloud className="w-8 h-8 text-primary" />
+            <Cloud className="w-8 h-8 text-primary dark:text-primary-foreground" />
             <Sun className="w-4 h-4 text-accent absolute -top-1 -right-1" />
           </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-xl font-bold text-transparent dark:from-primary-foreground dark:to-accent">
             WeatherApp
           </span>
         </div>
 
         {/* Controls */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           {/* Unit Switch */}
           <div className="flex items-center gap-2">
-            <span className={`text-sm font-medium ${unit === 'celsius' ? 'text-primary' : 'text-muted-foreground'}`}>
+            <span className={`text-sm font-bold ${unit === 'celsius' ? 'text-primary dark:text-primary-foreground' : 'text-muted-foreground dark:text-primary-foreground/70'}`}>
               °C
             </span>
             <Switch
@@ -48,7 +48,7 @@ export const Header: React.FC<HeaderProps> = ({
               onCheckedChange={(checked) => onUnitChange(checked ? 'fahrenheit' : 'celsius')}
               aria-label="Toggle temperature unit"
             />
-            <span className={`text-sm font-medium ${unit === 'fahrenheit' ? 'text-primary' : 'text-muted-foreground'}`}>
+            <span className={`text-sm font-bold ${unit === 'fahrenheit' ? 'text-primary dark:text-primary-foreground' : 'text-muted-foreground dark:text-primary-foreground/70'}`}>
               °F
             </span>
           </div>
@@ -58,7 +58,7 @@ export const Header: React.FC<HeaderProps> = ({
             variant="ghost"
             size="icon"
             onClick={onThemeToggle}
-            className="relative overflow-hidden"
+            className="relative overflow-hidden text-foreground hover:bg-muted/15 dark:text-primary-foreground dark:hover:bg-primary-foreground/10"
             aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
           >
             <div className="relative w-5 h-5">

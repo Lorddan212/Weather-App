@@ -21,10 +21,10 @@ export const WeatherLoader: FC = () => {
     <div className="flex flex-col items-center justify-center gap-4 p-8">
       <div className="relative">
         <Sun className="w-12 h-12 text-accent animate-spin-slow absolute -top-2 -right-2" />
-        <Cloud className="w-16 h-16 text-muted-foreground animate-float" />
+        <Cloud className="w-16 h-16 text-muted-foreground animate-float dark:text-primary-foreground/75" />
         <CloudRain className="w-8 h-8 text-primary animate-bounce-subtle absolute -bottom-2 left-1/2 -translate-x-1/2" />
       </div>
-      <p className="text-muted-foreground animate-pulse">Loading weather data...</p>
+      <p className="text-muted-foreground animate-pulse dark:text-primary-foreground/80">Loading weather data...</p>
     </div>
   );
 };
@@ -35,7 +35,7 @@ export const WeatherLoader: FC = () => {
 export const CurrentWeatherSkeleton: FC = () => {
   return (
     <div className="space-y-6">
-      <Card className="overflow-hidden border-0 bg-gradient-to-br from-background/80 to-background/40 backdrop-blur-xl">
+      <Card className="overflow-hidden border-0 bg-gradient-to-br from-background/80 to-background/40 backdrop-blur-xl dark:from-primary/30 dark:to-primary/15">
         <CardContent className="p-6 md:p-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div className="space-y-4 flex-1">
@@ -60,7 +60,7 @@ export const CurrentWeatherSkeleton: FC = () => {
       {/* Metrics Skeleton */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
         {Array.from({ length: 7 }).map((_, i) => (
-          <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-background/50">
+          <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-background/50 dark:bg-primary/20">
             <Skeleton className="h-10 w-10 rounded-full" />
             <div className="space-y-1">
               <Skeleton className="h-3 w-16" />
@@ -86,7 +86,7 @@ export const ForecastSkeleton: FC = () => {
       
       <div className="space-y-3">
         {Array.from({ length: 5 }).map((_, i) => (
-          <Card key={i} className="overflow-hidden">
+          <Card key={i} className="overflow-hidden dark:bg-primary/25 dark:text-primary-foreground">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
@@ -128,7 +128,7 @@ export const InlineLoader: FC<{ text?: string }> = ({ text = 'Loading...' }) => 
   return (
     <div className="flex items-center justify-center gap-2 py-4">
       <Loader2 className="w-5 h-5 animate-spin text-primary" />
-      <span className="text-muted-foreground text-sm">{text}</span>
+      <span className="text-muted-foreground text-sm dark:text-primary-foreground/80">{text}</span>
     </div>
   );
 };

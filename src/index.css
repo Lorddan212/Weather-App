@@ -38,9 +38,9 @@
   .dark {
     --background: 243.1 60.8% 37.1%;
     --foreground: 0 0% 100%;
-    --card: 243.1 60.8% 37.1%;
+    --card: 243.8 37.5% 59.2%;
     --card-foreground: 0 0% 100%;
-    --popover: 243.1 60.8% 37.1%;
+    --popover: 243.8 37.5% 59.2%;
     --popover-foreground: 0 0% 100%;
     --primary: 230.9 99% 59.4%;
     --primary-foreground: 0 0% 100%;
@@ -52,10 +52,10 @@
     --accent-foreground: 0 0% 100%;
     --destructive: 314 71.1% 53.9%;
     --destructive-foreground: 0 0% 100%;
-    --border: 243.8 37.5% 59.2%;
+    --border: 0 0% 100%;
     --input: 243.8 37.5% 59.2%;
     --ring: 230.9 99% 59.4%;
-    --sidebar-background: 243.1 60.8% 37.1%;
+    --sidebar-background: 243.8 37.5% 59.2%;
     --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 230.9 99% 59.4%;
     --sidebar-primary-foreground: 0 0% 100%;

@@ -222,12 +222,12 @@ function App() {
         {weatherData && (
           <div className="space-y-8 animate-in fade-in duration-500">
             {/* Last Updated */}
-            <div className="flex items-center justify-between rounded-xl bg-background/95 px-4 py-3 text-sm font-bold text-foreground shadow-xs backdrop-blur-sm">
+            <div className="flex items-center justify-between rounded-xl bg-background/95 px-4 py-3 text-sm font-bold text-foreground shadow-xs ring-1 ring-border/20 backdrop-blur-sm dark:bg-primary/25 dark:text-primary-foreground dark:ring-primary-foreground/10">
               <span>Last updated: {formatDate(weatherData.lastUpdated)}</span>
               <button 
                 onClick={handleRefresh}
                 disabled={weatherLoading}
-                className="font-bold text-primary transition-colors hover:text-secondary disabled:cursor-not-allowed disabled:opacity-60"
+                className="font-bold text-primary transition-colors hover:text-secondary disabled:cursor-not-allowed disabled:opacity-60 dark:text-primary-foreground dark:hover:text-accent"
               >
                 {weatherLoading ? 'Refreshing...' : 'Refresh'}
               </button>
@@ -258,7 +258,7 @@ function App() {
               <span className="text-4xl">🌤️</span>
             </div>
             <h2 className="text-2xl font-semibold mb-2">Welcome to WeatherApp</h2>
-            <p className="text-muted-foreground max-w-md mx-auto">
+            <p className="text-muted-foreground max-w-md mx-auto dark:text-primary-foreground/80">
               Search for a city or use your current location to get real-time weather updates and forecasts.
             </p>
           </div>
@@ -266,15 +266,15 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-background/50 backdrop-blur-sm mt-auto">
-        <div className="container mx-auto px-4 py-4 text-center text-sm text-muted-foreground">
+      <footer className="mt-auto bg-background/50 backdrop-blur-sm dark:bg-primary/25">
+        <div className="container mx-auto px-4 py-4 text-center text-sm text-muted-foreground dark:text-primary-foreground/75">
           <p>
             Weather data provided by{' '}
             <a 
               href="https://openweathermap.org" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-primary hover:underline"
+              className="font-bold text-primary hover:underline dark:text-primary-foreground"
             >
               OpenWeatherMap
             </a>
